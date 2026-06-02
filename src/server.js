@@ -17,6 +17,26 @@ app.get("/", (req, res) => { // API GET mặc định khi truy cập localhost:5
   })
 });
 
+
+app.get("/db-test", async (req, res) => { // API GET để kiểm tra kết nối đến cơ sở dữ liệu
+  try {
+    const result = await pool.query("SELECT NOW()");
+
+    res.json({
+      success: true,
+      message: "Database connected successfully",
+      time: result.rows[0].now,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Database connection failed",
+      error: error.message,
+    });
+  }
+});
+
+
 // Khởi động server và lắng nghe trên cổng được chỉ định trong biến môi trường PORT hoặc mặc định là 5000
 const PORT = process.env.PORT || 5000;
 
