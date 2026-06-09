@@ -1,5 +1,4 @@
-// Import thư viện Express
-const express = require("express");
+const express = require("express"); // Import thư viện Express
 const cors = require("cors"); // Thêm thư viện cors để xử lý CORS để cho phép truy cập từ các nguồn khác nhau
 require("dotenv").config(); // Thêm thư viện dotenv để quản lý biến môi trường
 
