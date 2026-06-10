@@ -96,5 +96,27 @@ const login = async (req,res) => {
     }
 }
 
+const getMe = async(req, res) => { // hàm dùng để khôi phục phiên đăng nhập
+    try {
+        const result = await pool.query(
+            "SELECT id, name, email, date_of_birth, gender, height_cm, role, created_at FROM users WHERE id = $1",
+            [req.userId]
+        );
 
-module.exports = {register, login};
+        const user = result.rows[0];
+        res.status(200).json({
+            success: true,
+            user: user
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi server",
+            error: error.message
+        });
+    }
+}
+
+
+module.exports = {register, login, getMe};

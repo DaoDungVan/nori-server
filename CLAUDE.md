@@ -58,6 +58,16 @@ src/
 ## Hướng dẫn cho AI
 - Đây là dự án học tập — giải thích từng bước, đưa skeleton để user tự viết, không viết thay
 - User đang học backend từ đầu
+- Cách giải thích hiệu quả với user này:
+  - So sánh khái niệm mới với cái user **đã biết** (vd: middleware giống controller nhưng có thêm `next`)
+  - Dùng **chính code user vừa viết** làm ví dụ minh họa, không dùng ví dụ trừu tượng
+  - Vẽ sơ đồ luồng (ASCII) khi giải thích thứ tự xử lý / flow
+  - Kết thúc bằng 1 câu tóm tắt ngắn gọn ("Tóm lại — 1 câu: ...")
+- Cách viết skeleton hiệu quả với user này:
+  - Giữ nguyên phần code user đã biết/đã quen (try/catch, res.status, cấu trúc hàm) — chỉ để trống (`// TODO`) đúng phần kiến thức MỚI cần học
+  - Đánh số TODO (`TODO 1`, `TODO 2`...) nếu có nhiều chỗ trống, để user dễ trả lời theo thứ tự
+  - Trước hoặc sau skeleton, đặt 1 câu hỏi gợi mở liên quan đến phần TODO quan trọng nhất — để user tự suy nghĩ trước khi viết, không chỉ chép
+  - Khi có hàm tương tự đã viết trước đó (vd: register vs login vs getMe), chỉ rõ "giống hàm X, chỉ khác chỗ Y" thay vì giải thích lại từ đầu
 
 ---
 
@@ -66,19 +76,14 @@ src/
 ### ✅ Phase 1 — Database
 6 bảng đã tạo trên Supabase (without RLS): `users`, `mood_logs`, `workout_logs`, `nutrition_logs`, `sleep_logs`, `weight_logs`
 
-### 🔄 Phase 2 — Authentication (ĐANG LÀM)
+### ✅ Phase 2 — Authentication BACKEND: HOÀN THÀNH
 - [x] Bảng `users` có thêm cột `role VARCHAR(20) DEFAULT 'user'` (chuẩn bị cho admin sau này)
-- [x] `src/controllers/authController.js`
-  - [x] Hàm `register` — HOÀN THÀNH, đã test OK (201 Created)
-  - [x] Hàm `login` — HOÀN THÀNH, đã test OK (200 + 401 sai password + 401 sai email)
-  - [ ] Viết hàm `getMe` (cần middleware xong mới viết được)
-- [x] `src/routes/authRoutes.js` — POST /register, /login
-- [x] Đăng ký routes vào `server.js`
-- [x] `.env` — đã thêm `JWT_SECRET`
-- [x] `src/middleware/authMiddleware.js` — HOÀN THÀNH
-  - Đủ 6 bước: lấy header, kiểm tra format `Bearer <token>`, tách token, jwt.verify (try/catch), gắn `req.userId`, `next()`
-- [ ] ĐANG LÀM TIẾP — Viết hàm `getMe` trong `authController.js`
-- [ ] Route GET /api/auth/me (dùng middleware `protect` + `getMe`)
+- [x] `src/controllers/authController.js` — register, login, getMe — đều xong + test OK
+- [x] `src/routes/authRoutes.js` — POST /register, POST /login, GET /me (có `protect`)
+- [x] `src/middleware/authMiddleware.js` (`protect`) — xong, test đủ 3 case (token đúng/thiếu/sai)
+- [x] `.env` — đã có `JWT_SECRET`
+
+🔜 Backend Phase 2 xong hoàn toàn. Việc tiếp theo cho Phase 2 nằm ở **nori-client** (frontend: Register/Login/Protected Route).
 
 ### ⏳ Phase 3 — Tâm trạng
 - [ ] moodController.js, moodRoutes.js
