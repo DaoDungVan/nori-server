@@ -2,6 +2,41 @@
 
 Backend của ứng dụng theo dõi sức khỏe Nori.
 
+## Giới thiệu đề tài
+
+NORI — Ứng dụng theo dõi sức khỏe cá nhân tích hợp AI
+
+### Vấn đề / Lý do chọn đề tài
+- Dữ liệu sức khỏe bị rời rạc — mỗi thứ ghi một nơi
+- Không có ai phân tích dữ liệu để đưa ra lời khuyên cá nhân hóa
+- Thiếu động lực/nhắc nhở để duy trì thói quen tốt
+
+### Mục tiêu đề tài
+Xây dựng ứng dụng web tập trung dữ liệu sức khỏe cá nhân vào 1 nơi, kèm AI phân tích để đưa ra gợi ý phù hợp với từng người dùng.
+
+### Đối tượng sử dụng
+Người dùng cá nhân muốn theo dõi và cải thiện sức khỏe hàng ngày — không cần kiến thức y khoa.
+
+### Phạm vi chức năng (4 mảng chính)
+| Mảng | Người dùng làm gì | AI hỗ trợ gì |
+|------|-------------------|--------------|
+| Tâm trạng | Ghi nhật ký cảm xúc (vui/buồn/stress/mệt) | Gợi ý cách cải thiện tinh thần |
+| Thể hình | Theo dõi cân nặng, BMI, lưu hoạt động tập | Gợi ý bài tập phù hợp mục tiêu |
+| Dinh dưỡng | Ghi nhật ký ăn uống, theo dõi calo | Phân tích bữa ăn, gợi ý thực đơn |
+| Ngủ nghỉ | Ghi giờ ngủ, đánh giá chất lượng | Gợi ý lịch ngủ tốt hơn |
+
+### Vai trò của AI
+AI không phải tính năng chính/trung tâm, mà là lớp hỗ trợ chạy ngầm:
+- Phân tích dữ liệu sức khỏe đã ghi nhận
+- Gợi ý thói quen tốt hơn dựa trên xu hướng dữ liệu
+- Tạo báo cáo cá nhân (tuần/tháng)
+- Nhắc nhở người dùng (ví dụ: "Bạn chưa ghi nhật ký hôm nay")
+
+### Công nghệ sử dụng
+- Backend: Node.js, Express, PostgreSQL (Supabase), JWT (xác thực)
+- Frontend: React, Vite
+- AI: Tích hợp Claude API (phase sau)
+
 ## Stack
 - Node.js + Express + PostgreSQL (Supabase) + JWT + bcryptjs
 
@@ -32,19 +67,19 @@ src/
 6 bảng đã tạo trên Supabase (without RLS): `users`, `mood_logs`, `workout_logs`, `nutrition_logs`, `sleep_logs`, `weight_logs`
 
 ### 🔄 Phase 2 — Authentication (ĐANG LÀM)
-- [x] `src/controllers/authController.js` — hàm `register` đang viết dở
-  - [x] Validate thiếu thông tin → 400
-  - [x] Kiểm tra email tồn tại → 409
-  - [ ] Hash password: `bcrypt.hash(password, 10)`
-  - [ ] INSERT user vào DB (`RETURNING id, name, email, created_at`)
-  - [ ] Tạo JWT: `jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' })`
-  - [ ] Trả về `201 + token + user`
-  - [ ] Viết hàm `login`
-  - [ ] Viết hàm `getMe`
-- [ ] `src/routes/authRoutes.js`
-- [ ] `src/middleware/authMiddleware.js`
-- [ ] Đăng ký routes vào `server.js`
-- [ ] Test bằng Thunder Client
+- [x] Bảng `users` có thêm cột `role VARCHAR(20) DEFAULT 'user'` (chuẩn bị cho admin sau này)
+- [x] `src/controllers/authController.js`
+  - [x] Hàm `register` — HOÀN THÀNH, đã test OK (201 Created)
+  - [x] Hàm `login` — HOÀN THÀNH, đã test OK (200 + 401 sai password + 401 sai email)
+  - [ ] Viết hàm `getMe` (cần middleware xong mới viết được)
+- [x] `src/routes/authRoutes.js` — POST /register, /login
+- [x] Đăng ký routes vào `server.js`
+- [x] `.env` — đã thêm `JWT_SECRET`
+- [ ] `src/middleware/authMiddleware.js` — ĐANG LÀM TIẾP
+  - Skeleton đã có, đang viết bước 1-3: lấy header `authorization`, kiểm tra format `Bearer <token>`, tách token
+  - Còn lại: bước 4 (jwt.verify trong try/catch), bước 5 (gắn req.userId), bước 6 (next())
+- [ ] Route GET /api/auth/me (dùng middleware + getMe)
+- [ ] Viết hàm `getMe` trong authController.js
 
 ### ⏳ Phase 3 — Tâm trạng
 - [ ] moodController.js, moodRoutes.js
