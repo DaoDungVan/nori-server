@@ -75,11 +75,10 @@ src/
 - [x] `src/routes/authRoutes.js` — POST /register, /login
 - [x] Đăng ký routes vào `server.js`
 - [x] `.env` — đã thêm `JWT_SECRET`
-- [ ] `src/middleware/authMiddleware.js` — ĐANG LÀM TIẾP
-  - Skeleton đã có, đang viết bước 1-3: lấy header `authorization`, kiểm tra format `Bearer <token>`, tách token
-  - Còn lại: bước 4 (jwt.verify trong try/catch), bước 5 (gắn req.userId), bước 6 (next())
-- [ ] Route GET /api/auth/me (dùng middleware + getMe)
-- [ ] Viết hàm `getMe` trong authController.js
+- [x] `src/middleware/authMiddleware.js` — HOÀN THÀNH
+  - Đủ 6 bước: lấy header, kiểm tra format `Bearer <token>`, tách token, jwt.verify (try/catch), gắn `req.userId`, `next()`
+- [ ] ĐANG LÀM TIẾP — Viết hàm `getMe` trong `authController.js`
+- [ ] Route GET /api/auth/me (dùng middleware `protect` + `getMe`)
 
 ### ⏳ Phase 3 — Tâm trạng
 - [ ] moodController.js, moodRoutes.js
